@@ -16,6 +16,7 @@ export interface ChildProfile {
   firstName: string
   age: number
   avatarId: string
+  photoDataUrl: string | null
   createdAt: string
 }
 
@@ -67,7 +68,7 @@ export interface AppDataActions {
   data: AppData
   addProfile: (profile: Omit<ChildProfile, 'id' | 'createdAt'>) => ChildProfile
   addGift: (gift: Pick<GiftWish, 'profileId' | 'name' | 'categoryId'> & Partial<Pick<GiftWish, 'surpriseRevealDate'>>) => GiftWish
-  updateProfile: (profileId: string, changes: Partial<Pick<ChildProfile, 'firstName' | 'age' | 'avatarId'>>) => void
+  updateProfile: (profileId: string, changes: Partial<Pick<ChildProfile, 'firstName' | 'age' | 'avatarId' | 'photoDataUrl'>>) => void
   deleteProfile: (profileId: string) => void
   updateGift: (giftId: string, changes: Partial<Omit<GiftWish, 'id' | 'profileId' | 'registeredAt' | 'orderNumber' | 'elfId'>>) => void
   deleteGift: (giftId: string) => void

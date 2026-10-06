@@ -2,7 +2,7 @@
 
 PWA mobile-first en français pour les familles pendant la période de Noël. Cette première version couvre les parcours enfant et parent, du dépôt des souhaits jusqu’aux expériences des 24 et 25 décembre.
 
-L’interface adopte une direction premium contemporaine : illustration 3D originale, grands contrôles tactiles, navigation directe, contraste renforcé et animations respectueuses de `prefers-reduced-motion`.
+L’interface adopte une direction premium et cinématographique : scènes réalistes originales, grands contrôles tactiles, navigation directe, contraste renforcé et animations respectueuses de `prefers-reduced-motion`.
 
 ## Prérequis
 
@@ -54,7 +54,8 @@ Les illustrations originales optimisées sont stockées dans `src/assets/` et em
 
 ## Fonctionnalités disponibles
 
-- Création de plusieurs profils enfants avec prénom, âge et avatar.
+- Création de plusieurs profils enfants avec prénom, âge, avatar illustré ou photo personnelle recadrée automatiquement.
+- Message cinématographique personnalisé du Père Noël, adapté au prénom, à l’âge, aux souhaits et aux bonnes actions de l’enfant.
 - Sélection d’un profil ; les souhaits restent séparés par enfant.
 - Ajout d’un souhait avec détection automatique de sa catégorie.
 - Confirmation ou correction manuelle parmi les 11 catégories.
@@ -77,4 +78,4 @@ Les banques se trouvent dans `src/content/anecdotes.ts`. Chaque catégorie poss�
 
 ## Confidentialité
 
-L’application n’effectue aucun appel réseau applicatif et n’intègre aucun outil de suivi. Les profils et souhaits restent stockés sur l’appareil.
+L’application n’effectue aucun appel réseau applicatif et n’intègre aucun outil de suivi. Les profils, souhaits et photos restent stockés sur l’appareil. Les photos sont redimensionnées avant leur enregistrement local et ne sont envoyées vers aucun service.

@@ -7,7 +7,7 @@ import { GiftForm } from './GiftForm'
 import type { AppDataActions } from '../types/domain'
 import { isGiftVisibleToChild } from '../lib/visibility'
 import { getProgressSnapshot } from '../lib/progression'
-import workshopNight from '../assets/workshop-night.webp'
+import workshopPortal from '../assets/workshop-portal-v2.webp'
 
 interface WorkshopProps {
   appData: AppDataActions
@@ -32,7 +32,7 @@ export function Workshop({ appData }: WorkshopProps) {
     <main className="workshop-screen min-h-dvh pb-28">
       <header className="workshop-header">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-4 sm:px-8">
-          <AvatarBadge avatarId={profile.avatarId} size="small" />
+          <AvatarBadge avatarId={profile.avatarId} photoDataUrl={profile.photoDataUrl} size="small" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold text-gold">L’atelier de</p>
             <h1 className="truncate font-display text-2xl font-bold text-cream">{profile.firstName}</h1>
@@ -42,11 +42,11 @@ export function Workshop({ appData }: WorkshopProps) {
       </header>
 
       <div className="mx-auto w-full max-w-5xl px-4 py-7 sm:px-8 sm:py-10">
-        <section className="workshop-welcome" style={{ backgroundImage: `linear-gradient(90deg, rgba(14, 43, 34, .94) 0%, rgba(14, 43, 34, .78) 48%, rgba(14, 43, 34, .12) 100%), url(${workshopNight})` }}>
+        <section className="workshop-welcome" style={{ backgroundImage: `linear-gradient(90deg, rgba(8, 25, 22, .91) 0%, rgba(8, 25, 22, .66) 47%, rgba(8, 25, 22, .08) 100%), url(${workshopPortal})` }}>
           <div className="relative z-10 max-w-xl">
             <p className="eyebrow text-gold">{dateLabel}</p>
-            <h2 className="font-display text-4xl font-bold leading-tight text-cream sm:text-5xl">Bonjour {profile.firstName},<br />l’atelier s’éveille.</h2>
-            <p className="mt-3 max-w-md text-base font-semibold leading-relaxed text-cream/75">Les lutins ont laissé de nouvelles traces dans tes carnets de fabrication.</p>
+            <h2 className="font-display text-4xl font-bold leading-tight text-cream sm:text-5xl">Bonjour {profile.firstName},<br />la magie continue.</h2>
+            <p className="mt-3 max-w-md text-base font-semibold leading-relaxed text-cream/80">Le Père Noël et ses lutins ont préparé de nouvelles surprises rien que pour toi.</p>
           </div>
           {gifts.length > 0 && (
             <div className="workshop-overview" aria-label={`Progression moyenne ${averageProgress} pour cent`}>
@@ -56,11 +56,18 @@ export function Workshop({ appData }: WorkshopProps) {
           )}
         </section>
 
-        <nav className="child-actions" aria-label="Activités de l’atelier">
+        <section className="journey-section" aria-labelledby="journey-title">
+          <div className="journey-heading">
+            <div><p className="eyebrow text-red">Ton aventure de Noël</p><h2 id="journey-title">Des moments magiques à vivre</h2></div>
+            <span>{Math.min(4, 1 + (gifts.length > 0 ? 1 : 0) + (now.getMonth() === 11 && now.getDate() >= 24 ? 1 : 0))}/4 ouverts</span>
+          </div>
+          <nav className="child-actions" aria-label="Activités de l’atelier">
+          <Link className="message-action" to={`/profil/${profile.id}/message`}><span aria-hidden="true">🎅</span><span><em>Nouveau</em><strong>Message personnel</strong><small>Le Père Noël te parle</small></span><b aria-hidden="true">›</b></Link>
           <Link className="magic-action" to={`/profil/${profile.id}/gentillometre`}><span aria-hidden="true">✨</span><span><strong>Gentillomètre</strong><small>Découvrir la magie en toi</small></span><b aria-hidden="true">›</b></Link>
           {now.getMonth() === 11 && now.getDate() === 24 && <Link to={`/profil/${profile.id}/24-decembre`}><span aria-hidden="true">🛷</span><span><strong>Le traîneau</strong><small>Suivre le voyage</small></span></Link>}
           {now.getMonth() === 11 && now.getDate() >= 25 && <Link to={`/profil/${profile.id}/merci`}><span aria-hidden="true">💌</span><span><strong>Dire merci</strong><small>Aux lutins</small></span></Link>}
-        </nav>
+          </nav>
+        </section>
 
         <section className="mb-7 flex items-end justify-between gap-4">
           <div>

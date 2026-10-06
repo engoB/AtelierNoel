@@ -1,9 +1,10 @@
-import { FormEvent, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { AvatarBadge } from './AvatarBadge'
 import { AVATARS } from '../content/avatars'
-import workshopNight from '../assets/workshop-night.webp'
+import workshopPortal from '../assets/workshop-portal-v2.webp'
+import { prepareProfilePhoto } from '../lib/profilePhoto'
 import type { AppDataActions } from '../types/domain'
 
 interface ProfilePickerProps {
@@ -16,6 +17,8 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
   const [firstName, setFirstName] = useState('')
   const [age, setAge] = useState('')
   const [avatarId, setAvatarId] = useState(AVATARS[0].id)
+  const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null)
+  const [photoError, setPhotoError] = useState('')
   const parentTimer = useRef<number | null>(null)
 
   function startParentGesture() {
@@ -32,20 +35,32 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
     const parsedAge = Number(age)
     if (!firstName.trim() || !Number.isInteger(parsedAge) || parsedAge < 1 || parsedAge > 17) return
 
-    const profile = appData.addProfile({ firstName, age: parsedAge, avatarId })
+    const profile = appData.addProfile({ firstName, age: parsedAge, avatarId, photoDataUrl })
     navigate(`/profil/${profile.id}`)
+  }
+
+  async function handlePhoto(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (!file) return
+    try {
+      setPhotoError('')
+      setPhotoDataUrl(await prepareProfilePhoto(file))
+    } catch (error) {
+      setPhotoError(error instanceof Error ? error.message : 'Cette photo ne peut pas être utilisée.')
+    }
+    event.target.value = ''
   }
 
   return (
     <main className="welcome-shell">
       <div className="snow" aria-hidden="true" />
       <section className="welcome-card relative z-10 mx-auto w-full max-w-6xl">
-        <div className="welcome-visual" style={{ backgroundImage: `url(${workshopNight})` }}>
+        <div className="welcome-visual" style={{ backgroundImage: `url(${workshopPortal})` }}>
           <div className="welcome-brand">
             <span className="brand-star" aria-hidden="true">✦</span>
-            <p className="eyebrow text-gold">Un secret bien gardé au pôle Nord</p>
+            <p className="eyebrow text-gold">La porte vient de s’ouvrir</p>
             <h1 className="font-display text-4xl font-bold leading-[1.03] text-cream sm:text-6xl">L’Atelier<br />du Père Noël</h1>
-            <p className="mt-4 max-w-md text-base font-semibold leading-relaxed text-cream/80 sm:text-lg">Chaque souhait ouvre une petite fenêtre sur la magie de l’atelier.</p>
+            <p className="mt-4 max-w-md text-base font-semibold leading-relaxed text-cream/80 sm:text-lg">Entre. Quelqu’un au pôle Nord connaît déjà ton prénom.</p>
           </div>
         </div>
 
@@ -63,7 +78,7 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {appData.data.profiles.map((profile) => (
                 <button key={profile.id} type="button" className="profile-card group" onClick={() => navigate(`/profil/${profile.id}`)}>
-                  <AvatarBadge avatarId={profile.avatarId} />
+                  <AvatarBadge avatarId={profile.avatarId} photoDataUrl={profile.photoDataUrl} />
                   <span className="min-w-0 text-left">
                     <span className="block truncate font-display text-2xl font-bold text-pine">{profile.firstName}</span>
                     <span className="mt-1 block text-base text-ink/60">{profile.age} ans</span>
@@ -101,8 +116,21 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
                 </label>
               </div>
 
+              <div className="photo-picker mt-5">
+                <AvatarBadge avatarId={avatarId} photoDataUrl={photoDataUrl} />
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-pine">Ajoute ta photo <span className="font-normal text-pine/50">(facultatif)</span></p>
+                  <p className="mt-1 text-sm leading-relaxed text-ink/55">Elle apparaîtra dans les messages magiques et restera sur cet appareil.</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <label className="photo-button">📷 Choisir une photo<input className="sr-only" type="file" accept="image/*" onChange={handlePhoto} /></label>
+                    {photoDataUrl && <button className="photo-remove" type="button" onClick={() => setPhotoDataUrl(null)}>Retirer</button>}
+                  </div>
+                  {photoError && <p className="mt-2 text-sm font-bold text-red" role="alert">{photoError}</p>}
+                </div>
+              </div>
+
               <fieldset className="mt-5">
-                <legend className="field-label mb-3">Choisis ton compagnon</legend>
+                <legend className="field-label mb-3">Ou choisis un compagnon</legend>
                 <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
                   {AVATARS.map((avatar) => (
                     <label key={avatar.id} className="avatar-choice" data-selected={avatarId === avatar.id} title={avatar.label}>

@@ -7,6 +7,7 @@ import { KindnessMeter } from './components/KindnessMeter'
 import { ChristmasEve } from './components/ChristmasEve'
 import { ChristmasThanks } from './components/ChristmasThanks'
 import { Workshop } from './components/Workshop'
+import { SantaMessage } from './components/SantaMessage'
 import { useAppData } from './hooks/useAppData'
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/profil/:profileId/cadeau/:giftId" element={<GiftJournal appData={appData} />} />
       <Route path="/parents" element={<ParentGate appData={appData} />} />
       <Route path="/profil/:profileId/gentillometre" element={<KindnessMeter appData={appData} />} />
+      <Route path="/profil/:profileId/message" element={<SantaMessage appData={appData} />} />
       <Route path="/profil/:profileId/24-decembre" element={<ChristmasEve appData={appData} />} />
       <Route path="/profil/:profileId/merci" element={<ChristmasThanks appData={appData} />} />
       <Route path="*" element={<Navigate to="/" replace />} />

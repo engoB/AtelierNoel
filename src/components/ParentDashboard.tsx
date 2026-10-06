@@ -2,10 +2,12 @@ import { ChangeEvent, FormEvent, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { DateTestControl } from './DateTestControl'
+import { AvatarBadge } from './AvatarBadge'
 import { GIFT_CATEGORIES } from '../content/categories'
 import { getGiftJournal } from '../lib/anecdoteEngine'
 import { getGiftSchedule, startOfLocalDay, toDateKey } from '../lib/progression'
 import { normalizeAppData } from '../lib/storage'
+import { prepareProfilePhoto } from '../lib/profilePhoto'
 import type { AppDataActions, CategoryId, GiftWish } from '../types/domain'
 
 interface ParentDashboardProps {
@@ -85,6 +87,18 @@ export function ParentDashboard({ appData, onLock }: ParentDashboardProps) {
     event.target.value = ''
   }
 
+  async function updateProfilePhoto(profileId: string, event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (!file) return
+    try {
+      appData.updateProfile(profileId, { photoDataUrl: await prepareProfilePhoto(file) })
+      setNotice('La photo du profil a été mise à jour sur cet appareil.')
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Cette photo ne peut pas être utilisée.')
+    }
+    event.target.value = ''
+  }
+
   return (
     <main className="min-h-dvh bg-[#edf3ef] pb-16">
       <header className="parent-header">
@@ -119,7 +133,13 @@ export function ParentDashboard({ appData, onLock }: ParentDashboardProps) {
               const gifts = appData.data.gifts.filter((gift) => gift.profileId === profile.id)
               return (
                 <article key={profile.id} className="parent-card">
-                  <div className="grid gap-3 sm:grid-cols-[1fr_8rem_auto] sm:items-end">
+                  <div className="parent-profile-photo">
+                    <AvatarBadge avatarId={profile.avatarId} photoDataUrl={profile.photoDataUrl} />
+                    <div><strong>Portrait de {profile.firstName}</strong><span>Visible dans son message personnalisé. La photo ne quitte jamais cet appareil.</span></div>
+                    <label className="secondary-button cursor-pointer">📷 {profile.photoDataUrl ? 'Changer' : 'Ajouter'}<input className="sr-only" type="file" accept="image/*" onChange={(event) => updateProfilePhoto(profile.id, event)} /></label>
+                    {profile.photoDataUrl && <button className="photo-remove" type="button" onClick={() => appData.updateProfile(profile.id, { photoDataUrl: null })}>Retirer</button>}
+                  </div>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_8rem_auto] sm:items-end">
                     <label className="field-label">Prénom<input className="text-field" defaultValue={profile.firstName} onBlur={(event) => appData.updateProfile(profile.id, { firstName: event.target.value.trim() || profile.firstName })} /></label>
                     <label className="field-label">Âge<input className="text-field" type="number" min="1" max="17" defaultValue={profile.age} onBlur={(event) => appData.updateProfile(profile.id, { age: Number(event.target.value) || profile.age })} /></label>
                     <button className="danger-button" type="button" onClick={() => window.confirm(`Supprimer le profil de ${profile.firstName} et ses cadeaux ?`) && appData.deleteProfile(profile.id)}>Supprimer</button>

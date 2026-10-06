@@ -46,7 +46,7 @@ export function normalizeAppData(value: unknown): AppData | null {
   const defaultData = createEmptyAppData()
   return {
     version: 3,
-    profiles: parsed.profiles,
+    profiles: parsed.profiles.map((profile) => ({ ...profile, photoDataUrl: profile.photoDataUrl ?? null })),
     gifts: parsed.gifts.map(normalizeGift),
     settings: { ...defaultData.settings, ...(parsed.settings ?? {}) },
     anecdoteOverrides: parsed.anecdoteOverrides ?? {},
