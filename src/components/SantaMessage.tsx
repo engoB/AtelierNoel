@@ -76,7 +76,7 @@ export function SantaMessage({ appData }: SantaMessageProps) {
           <section className="message-intro">
             <p className="eyebrow text-gold">Connexion avec le pôle Nord</p>
             <h1>Un message personnel<br />attend {profile.firstName}</h1>
-            <p>Installe-toi confortablement et monte le son si tu veux. Le grand livre vient de s’ouvrir.</p>
+            <p>Installe-toi confortablement. Le grand livre vient de s’ouvrir rien que pour toi.</p>
             <button className="message-play" type="button" onClick={startMessage}><span aria-hidden="true">▶</span> Recevoir mon message</button>
             <small>Une expérience créée localement avec ton prénom, tes souhaits et tes bonnes actions.</small>
           </section>
