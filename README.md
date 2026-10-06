@@ -4,6 +4,8 @@ PWA mobile-first en français pour les familles pendant la période de Noël. Ce
 
 L’interface adopte une direction premium et cinématographique : scènes réalistes originales, grands contrôles tactiles, navigation directe, contraste renforcé et animations respectueuses de `prefers-reduced-motion`.
 
+La navigation enfant est construite comme une aventure : carte du monde, quête principale, missions, niveaux, éclats d’étoile et révélations interactives. Ces récompenses restent purement narratives et ne changent jamais la date réelle de fabrication.
+
 ## Prérequis
 
 - Node.js 24
@@ -55,10 +57,15 @@ Les illustrations originales optimisées sont stockées dans `src/assets/` et em
 ## Fonctionnalités disponibles
 
 - Création de plusieurs profils enfants avec prénom, âge, avatar illustré ou photo personnelle recadrée automatiquement.
+- Choix d’un « pouvoir de Noël » qui personnalise le rôle de l’enfant dans l’histoire.
 - Message cinématographique personnalisé du Père Noël, adapté au prénom, à l’âge, aux souhaits et aux bonnes actions de l’enfant.
+- Message interactif avec choix narratif et cinq étincelles à retrouver dans la scène.
+- Monde de l’atelier navigable, journal de quête, niveaux et missions positives.
 - Sélection d’un profil ; les souhaits restent séparés par enfant.
 - Ajout d’un souhait avec détection automatique de sa catégorie.
 - Confirmation ou correction manuelle parmi les 11 catégories.
+- Assistant de souhait en deux étapes avec suggestions visuelles et détection tolérant pluriels et formulations proches.
+- Révélation interactive du lutin, de sa première mission et du bon de fabrication.
 - Bon de fabrication avec numéro fantaisie, date et lutin attitré.
 - Progression calculée entre le début de fabrication et le 23 décembre au soir.
 - Six étapes propres à chaque catégorie.

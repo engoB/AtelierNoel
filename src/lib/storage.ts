@@ -4,7 +4,7 @@ const STORAGE_KEY = 'atelier-noel:data:v1'
 
 export function createEmptyAppData(): AppData {
   return {
-    version: 3,
+    version: 4,
     profiles: [],
     gifts: [],
     settings: {
@@ -17,6 +17,7 @@ export function createEmptyAppData(): AppData {
     anecdoteOverrides: {},
     goodDeeds: [],
     thanks: {},
+    storyProgress: {},
   }
 }
 
@@ -45,13 +46,14 @@ export function normalizeAppData(value: unknown): AppData | null {
 
   const defaultData = createEmptyAppData()
   return {
-    version: 3,
-    profiles: parsed.profiles.map((profile) => ({ ...profile, photoDataUrl: profile.photoDataUrl ?? null })),
+    version: 4,
+    profiles: parsed.profiles.map((profile) => ({ ...profile, photoDataUrl: profile.photoDataUrl ?? null, magicQuality: profile.magicQuality ?? 'curieux' })),
     gifts: parsed.gifts.map(normalizeGift),
     settings: { ...defaultData.settings, ...(parsed.settings ?? {}) },
     anecdoteOverrides: parsed.anecdoteOverrides ?? {},
     goodDeeds: Array.isArray(parsed.goodDeeds) ? parsed.goodDeeds : [],
     thanks: parsed.thanks ?? {},
+    storyProgress: parsed.storyProgress ?? {},
   }
 }
 

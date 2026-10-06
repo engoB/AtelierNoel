@@ -115,6 +115,18 @@ export function useAppData(): AppDataActions {
     sendThanks(profileId, elfId, message) {
       setData((current) => ({ ...current, thanks: { ...current.thanks, [`${profileId}|${elfId}`]: message } }))
     },
+    markStoryMessageSeen(profileId, sparklesFound) {
+      setData((current) => ({
+        ...current,
+        storyProgress: {
+          ...current.storyProgress,
+          [profileId]: {
+            messageSeen: true,
+            sparklesFound: Math.max(current.storyProgress[profileId]?.sparklesFound ?? 0, sparklesFound),
+          },
+        },
+      }))
+    },
     importData(imported) {
       setData(imported)
     },

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { AvatarBadge } from './AvatarBadge'
 import { AVATARS } from '../content/avatars'
+import { MAGIC_QUALITIES } from '../content/qualities'
 import workshopPortal from '../assets/workshop-portal-v2.webp'
 import { prepareProfilePhoto } from '../lib/profilePhoto'
 import type { AppDataActions } from '../types/domain'
@@ -19,6 +20,7 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
   const [avatarId, setAvatarId] = useState(AVATARS[0].id)
   const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null)
   const [photoError, setPhotoError] = useState('')
+  const [magicQuality, setMagicQuality] = useState(MAGIC_QUALITIES[0].id)
   const parentTimer = useRef<number | null>(null)
 
   function startParentGesture() {
@@ -35,7 +37,7 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
     const parsedAge = Number(age)
     if (!firstName.trim() || !Number.isInteger(parsedAge) || parsedAge < 1 || parsedAge > 17) return
 
-    const profile = appData.addProfile({ firstName, age: parsedAge, avatarId, photoDataUrl })
+    const profile = appData.addProfile({ firstName, age: parsedAge, avatarId, photoDataUrl, magicQuality })
     navigate(`/profil/${profile.id}`)
   }
 
@@ -136,6 +138,20 @@ export function ProfilePicker({ appData }: ProfilePickerProps) {
                     <label key={avatar.id} className="avatar-choice" data-selected={avatarId === avatar.id} title={avatar.label}>
                       <input className="sr-only" type="radio" name="avatar" value={avatar.id} checked={avatarId === avatar.id} onChange={() => setAvatarId(avatar.id)} />
                       <span role="img" aria-label={avatar.label}>{avatar.emoji}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="quality-fieldset mt-5">
+                <legend className="field-label mb-3">Quel est ton pouvoir de Noël ?</legend>
+                <div className="quality-grid">
+                  {MAGIC_QUALITIES.map((quality) => (
+                    <label key={quality.id} className="quality-choice" data-selected={magicQuality === quality.id}>
+                      <input className="sr-only" type="radio" name="quality" value={quality.id} checked={magicQuality === quality.id} onChange={() => setMagicQuality(quality.id)} />
+                      <span aria-hidden="true">{quality.emoji}</span>
+                      <strong>{quality.label}</strong>
+                      <small>{quality.storyLine}</small>
                     </label>
                   ))}
                 </div>
