@@ -122,7 +122,7 @@ function scrollToId(id: string) {
 
 function WorldDestination({ className, icon, label, state, href, onClick, highlight = false, locked = false }: { className: string; icon: string; label: string; state: string; href?: string; onClick?: () => void; highlight?: boolean; locked?: boolean }) {
   const content = <><span className="destination-icon" aria-hidden="true">{locked ? '🔒' : icon}</span><span><strong>{label}</strong><small>{state}</small></span></>
-  if (href) return <a className={`world-destination ${className}`} data-highlight={highlight} href={href}>{content}</a>
+  if (href) return <Link className={`world-destination ${className}`} data-highlight={highlight} to={href}>{content}</Link>
   return <button type="button" className={`world-destination ${className}`} data-highlight={highlight} data-locked={locked} onClick={onClick} disabled={locked}>{content}</button>
 }
 
