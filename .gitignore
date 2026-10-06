@@ -1,0 +1,10 @@
+node_modules/
+dist/
+standalone/
+.sites-checkout/
+.sites-runtime/
+*.tar.gz
+*.zip
+atelier-du-pere-noel.html
+generated_images/
+.DS_Store
